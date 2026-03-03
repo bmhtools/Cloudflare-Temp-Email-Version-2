@@ -165,7 +165,9 @@ export default {
         <html>
         <head>
           <meta charset="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
           <title>${escapeHTML(email.subject)}</title>
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
@@ -177,22 +179,23 @@ export default {
             [data-theme=dark]{
               --bg:var(--bg-dark);--card:var(--card-dark);--text:var(--text);--border:var(--border-dark);
             }
-            *{box-sizing:border-box}
+            *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
             html,body{height:100%;margin:0;padding:0}
             body{
               font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
               background:var(--bg);color:var(--text);transition:background 0.2s,color 0.2s;line-height:1.6;
+              -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale
             }
             .wrap{max-width:900px;margin:0 auto;padding:24px}
-            h1{margin:0 0 24px 0;font-size:28px;font-weight:700;color:var(--text)}
-            h2{margin:0 0 16px 0;font-size:22px;font-weight:700;color:var(--text)}
-            .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+            h1{margin:0 0 24px 0;font-size:28px;font-weight:700;color:var(--text);word-break:break-word}
+            h2{margin:0 0 16px 0;font-size:22px;font-weight:700;color:var(--text);word-break:break-word}
+            .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:16px;flex-wrap:wrap}
             .header-nav{display:flex;gap:12px;align-items:center}
             .box{
               background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;margin-bottom:24px;
               box-shadow:var(--shadow);transition:box-shadow 0.3s,background 0.2s;
             }
-            .box:hover{box-shadow:var(--shadow-lg)}
+            @media (hover:hover){.box:hover{box-shadow:var(--shadow-lg)}}
             .meta{
               color:var(--text-light);font-size:13px;line-height:1.8;margin:16px 0;
               display:grid;gap:8px;
@@ -200,35 +203,49 @@ export default {
             .meta strong{color:var(--text);font-weight:600}
             .body{
               background:var(--bg);padding:16px;border-radius:8px;border-left:4px solid var(--brand);
-              font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;overflow-x:auto;
-              color:var(--text);margin-top:16px;white-space:pre-wrap;word-break:break-word
+              font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6;overflow-x:auto;
+              color:var(--text);margin-top:16px;white-space:pre-wrap;word-break:break-word;-webkit-overflow-scrolling:touch
             }
             .html-render{
               background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:20px;margin:16px 0;
-              font-size:14px;line-height:1.7;overflow-x:auto;
+              font-size:14px;line-height:1.7;overflow-x:auto;-webkit-overflow-scrolling:touch
             }
-            .html-render img{max-width:100%;height:auto}
+            .html-render img{max-width:100%;height:auto;display:block}
             a{color:var(--brand);text-decoration:none;transition:color 0.2s}
-            a:hover{color:var(--brand-hover)}
+            @media (hover:hover){a:hover{color:var(--brand-hover)}}
             .btn{
-              display:inline-flex;align-items:center;gap:8px;border-radius:8px;padding:10px 16px;
+              display:inline-flex;align-items:center;gap:8px;border-radius:8px;padding:12px 16px;min-height:44px;min-width:44px;
               font-weight:600;color:white;background:var(--brand);text-decoration:none;cursor:pointer;border:none;
-              transition:all 0.2s;font-size:14px;font-family:inherit
+              transition:all 0.2s;font-size:14px;font-family:inherit;justify-content:center;
             }
-            .btn:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,0.3)}
+            @media (hover:hover){.btn:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,0.3)}}
+            .btn:active{opacity:0.9;transform:translateY(0)}
             .btn.secondary{background:var(--muted-dark);color:white}
-            .btn.secondary:hover{background:#334155}
+            @media (hover:hover){.btn.secondary:hover{background:#334155}}
             .btn.danger{background:var(--danger)}
-            .btn.danger:hover{background:#dc2626}
-            .btn.ghost{background:transparent;color:var(--brand);border:1.5px solid rgba(37,99,235,0.3);padding:9px 15px}
-            .btn.ghost:hover{background:rgba(37,99,235,0.05);border-color:rgba(37,99,235,0.5)}
-            .btn.small{padding:6px 12px;font-size:13px}
+            @media (hover:hover){.btn.danger:hover{background:#dc2626}}
+            .btn.ghost{background:transparent;color:var(--brand);border:1.5px solid rgba(37,99,235,0.3);padding:11px 15px}
+            @media (hover:hover){.btn.ghost:hover{background:rgba(37,99,235,0.05);border-color:rgba(37,99,235,0.5)}}
+            .btn.ghost:active{background:rgba(37,99,235,0.08)}
+            .btn.small{padding:10px 12px;font-size:13px;min-height:40px}
             .tools{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:16px 0}
-            .tabs{display:flex;gap:12px;border-bottom:2px solid var(--border);margin:20px 0}
-            .tab{padding:12px 0;border-bottom:2px solid transparent;cursor:pointer;transition:all 0.2s;font-weight:600}
+            .tabs{display:flex;gap:12px;border-bottom:2px solid var(--border);margin:20px 0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+            .tab{padding:12px 8px;border-bottom:2px solid transparent;cursor:pointer;transition:all 0.2s;font-weight:600;white-space:nowrap}
+            .tab:active{opacity:0.8}
             .tab.active{border-bottom-color:var(--brand);color:var(--brand)}
-            .toggle-theme{width:40px;height:40px;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;flex:0 0 40px;display:flex;align-items:center;justify-content:center}
-            .toggle-theme:hover{background:var(--bg)}
+            .toggle-theme{width:48px;height:48px;border-radius:8px;border:1px solid var(--border);background:var(--card);cursor:pointer;flex:0 0 48px;display:flex;align-items:center;justify-content:center;font-size:20px}
+            @media (hover:hover){.toggle-theme:hover{background:var(--bg)}}
+            .toggle-theme:active{opacity:0.8}
+            @media (max-width:480px){
+              .wrap{padding:12px}
+              .box{padding:14px}
+              .tools{gap:8px}
+              .btn{padding:10px 14px;font-size:13px;min-height:40px}
+              h1{font-size:20px}
+              h2{font-size:16px}
+              .meta{font-size:12px}
+              .header{margin-bottom:16px}
+            }
             @media (max-width:768px){
               .wrap{padding:16px}
               .box{padding:16px}
@@ -307,7 +324,9 @@ export default {
       <html>
       <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <title>Email Inbox</title>
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -326,7 +345,7 @@ export default {
             background:var(--bg);color:var(--text);transition:background 0.2s,color 0.2s;line-height:1.6;
           }
           .wrap{max-width:1200px;margin:0 auto;padding:24px}
-          h1{margin:0 0 24px 0;font-size:28px;font-weight:700;color:var(--text)}
+            h1{margin:0 0 24px 0;font-size:28px;font-weight:700;color:var(--text);word-break:break-word}
           .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;gap:16px}
           .header-left{display:flex;align-items:center;gap:16px;flex:1;min-width:0}
           .search-box{flex:1;min-width:200px;max-width:400px}
@@ -336,21 +355,22 @@ export default {
           }
           .search-box input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(37,99,235,0.1)}
           .email-card{
-            background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;
-            display:flex;gap:12px;align-items:center;transition:all 0.2s;position:relative;
+            background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;
+            display:flex;gap:12px;align-items:center;transition:all 0.2s;position:relative;touch-action:manipulation;
           }
-          .email-card:hover{box-shadow:var(--shadow-lg);border-color:var(--border)}
-          .email-card input[type="checkbox"]{width:18px;height:18px;cursor:pointer;flex:0 0 18px}
+          @media (hover:hover){.email-card:hover{box-shadow:var(--shadow-lg);border-color:var(--border)}}
+          .email-card:active{opacity:0.95}
+            .email-card input[type="checkbox"]{width:24px;height:24px;cursor:pointer;flex:0 0 24px;accent-color:var(--brand)}
           .email-content{flex:1;min-width:0;cursor:pointer}
           .email-subject{
             font-size:15px;font-weight:600;color:var(--text);margin-bottom:6px;text-decoration:none;display:block;
-            overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+            overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:break-word
           }
-          .email-card:hover .email-subject{color:var(--brand)}
+          @media (hover:hover){.email-card:hover .email-subject{color:var(--brand)}}
           .email-meta{
             font-size:13px;color:var(--text-light);display:flex;align-items:center;gap:12px;flex-wrap:wrap
           }
-          .email-from{font-weight:500;color:var(--text)}
+            .email-from{font-weight:500;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
           .read-indicator{
             display:inline-block;width:8px;height:8px;border-radius:50%;flex:0 0 8px;
           }
@@ -366,41 +386,61 @@ export default {
           }
           .btn:hover{background:var(--brand-hover);transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,99,235,0.3)}
           .btn.secondary{background:var(--muted-dark);color:white}
-          .btn.secondary:hover{background:#334155}
+            @media (hover:hover){.btn.secondary:hover{background:#334155}}
           .btn.danger{background:var(--danger)}
-          .btn.danger:hover{background:#dc2626}
-          .btn.info{background:var(--info)}
-          .btn.info:hover{background:#0891b2}
-          .btn.ghost{background:transparent;color:var(--brand);border:1.5px solid rgba(37,99,235,0.3);padding:7px 11px}
-          .btn.ghost:hover{background:rgba(37,99,235,0.05);border-color:rgba(37,99,235,0.5)}
-          .btn.small{padding:6px 10px;font-size:12px}
+            @media (hover:hover){.btn.danger:hover{background:#dc2626}}
+            .btn.info{background:var(--info)}
+            @media (hover:hover){.btn.info:hover{background:#0891b2}}
+            .btn.ghost{background:transparent;color:var(--brand);border:1.5px solid rgba(37,99,235,0.3);padding:9px 11px}
+            @media (hover:hover){.btn.ghost:hover{background:rgba(37,99,235,0.05);border-color:rgba(37,99,235,0.5)}}
+            .btn.ghost:active{background:rgba(37,99,235,0.08)}
+            .btn.small{padding:8px 10px;font-size:12px;min-height:36px}
           .controls{
             display:flex;gap:16px;align-items:center;margin-bottom:20px;flex-wrap:wrap;justify-content:space-between
           }
           .controls-left{display:flex;gap:16px;align-items:center;flex:1;min-width:0;flex-wrap:wrap}
           .controls-right{display:flex;gap:8px;align-items:center;flex:0 0 auto;flex-wrap:wrap}
-          .toggle-theme{width:40px;height:40px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-size:18px}
-          .toggle-theme:hover{background:var(--bg);border-color:var(--brand)}
-          .pagination{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:24px}
+            .toggle-theme{width:48px;height:48px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-size:20px;touch-action:manipulation}
+            @media (hover:hover){.toggle-theme:hover{background:var(--bg);border-color:var(--brand)}}
+            .toggle-theme:active{opacity:0.8}
+            .pagination{display:flex;gap:12px;align-items:center;justify-content:center;margin-top:24px;flex-wrap:wrap}
           .pagination-info{font-size:13px;color:var(--text-light)}
           .empty-state{text-align:center;padding:60px 20px;color:var(--text-light)}
           .empty-state-icon{font-size:48px;margin-bottom:16px}
           @media (max-width:1024px){
-            .email-actions{flex-direction:column}
+            .email-actions{flex-direction:column;width:100%}
             .btn{width:100%}
           }
           @media (max-width:768px){
             .wrap{padding:16px}
-            .controls{gap:12px;flex-direction:column;align-items:stretch}
-            .controls-left{flex-direction:column}
-            .controls-right{justify-content:stretch}
-            .search-box{max-width:100%}
-            .email-card{flex-direction:column;align-items:stretch}
-            .email-actions{width:100%;flex-direction:row;justify-content:space-around}
-            .btn{font-size:12px;padding:6px 10px}
             h1{font-size:24px}
-            .header-left{flex-direction:column;width:100%}
-            .toggle-theme{width:100%;height:auto;padding:8px}
+            .header{gap:12px}
+            .controls{gap:12px;flex-direction:column;align-items:stretch}
+            .controls-left{flex-direction:column;gap:12px}
+            .controls-right{justify-content:stretch;gap:6px}
+            .search-box{max-width:100%;margin:0}
+            .search-box input{font-size:16px;padding:12px}
+            .email-card{flex-direction:column;align-items:stretch;padding:12px}
+            .email-actions{flex-direction:row;justify-content:space-between;gap:6px}
+            .btn{font-size:11px;padding:8px 8px;min-height:36px}
+            .header-left{flex-direction:column;width:100%;gap:12px}
+            .toggle-theme{width:100%;height:auto;padding:12px}
+          }
+          @media (max-width:480px){
+            .wrap{padding:12px}
+            h1{font-size:20px;margin-bottom:16px}
+            .header{gap:8px;margin-bottom:16px}
+            .controls{gap:8px}
+            .search-box input{padding:10px 12px;font-size:16px}
+            .email-card{padding:10px;gap:8px}
+            .email-card input[type="checkbox"]{width:20px;height:20px}
+            .email-meta{font-size:12px;gap:6px}
+            .email-subject{font-size:14px}
+            .email-actions{gap:4px;font-size:11px}
+            .btn{padding:6px 8px;font-size:10px;min-height:32px;gap:2px}
+            .btn.small{padding:6px 8px;font-size:10px}
+            .pagination{gap:8px;font-size:12px}
+            .toggle-theme{height:44px}
           }
         </style>
       </head>
